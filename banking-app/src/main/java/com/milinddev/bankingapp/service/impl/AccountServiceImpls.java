@@ -1,6 +1,7 @@
 package com.milinddev.bankingapp.service.impl;
 
 import com.milinddev.bankingapp.dto.AccountDto;
+import com.milinddev.bankingapp.dto.TransferFundDto;
 import com.milinddev.bankingapp.entity.Account;
 import com.milinddev.bankingapp.mapper.AccountMapper;
 import com.milinddev.bankingapp.repository.AccountRepository;
@@ -70,5 +71,15 @@ public class AccountServiceImpls implements AccountService {
     public void deleteAccount(Long id) {
         Account account = accountRepository.findById(id).orElseThrow(()->new RuntimeException("Account not found"));
         accountRepository.deleteById(id);
+    }
+
+    @Override
+    public void transferFunds(TransferFundDto transferFundDto) {
+        Account fromAccountDto = accountRepository.findById(transferFundDto.fromAccountId()).orElseThrow(()->new RuntimeException("Account not found"));
+        Account toAccountDto = accountRepository.findById(transferFundDto.toAccountId()).orElseThrow(()->new RuntimeException("Account not found"));
+        fromAccountDto.setBalance(fromAccountDto.getBalance() - transferFundDto.amount());
+        toAccountDto.setBalance(fromAccountDto.getBalance() + transferFundDto.amount());
+        accountRepository.save(fromAccountDto);
+        accountRepository.save(toAccountDto);
     }
 }

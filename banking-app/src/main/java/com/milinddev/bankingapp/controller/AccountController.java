@@ -1,6 +1,7 @@
 package com.milinddev.bankingapp.controller;
 
 import com.milinddev.bankingapp.dto.AccountDto;
+import com.milinddev.bankingapp.dto.TransferFundDto;
 import com.milinddev.bankingapp.service.AccountService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -54,5 +55,10 @@ public class AccountController {
     public ResponseEntity<String> deleteAccount(@PathVariable Long id){
         accountService.deleteAccount(id);
         return ResponseEntity.ok("Account is deleted");
+    }
+    @PostMapping("/transfer")
+    public ResponseEntity<String> transferFunds(@RequestBody  TransferFundDto transferFundDto){
+        accountService.transferFunds(transferFundDto);
+        return ResponseEntity.ok("Tranfer successfully");
     }
 }
